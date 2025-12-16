@@ -1,0 +1,181 @@
+:root {
+  --card-bg: rgba(15, 23, 42, 0.88);
+  --border-soft: rgba(148, 163, 184, 0.3);
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  --accent-sky: #38bdf8;
+  --accent-emerald: #4ade80;
+  --accent-blue: #3b82f6;
+}
+
+/* Page background */
+.homePage {
+  min-height: 100vh;
+  padding: 1.5rem;
+  background: radial-gradient(circle at top left, #0f172a 0, #020617 45%, #000 100%);
+  color: var(--text-main);
+}
+
+/* Card wrapper */
+.homeCard {
+  max-width: 420px;
+}
+
+/* Glow behind card */
+.homeGlow {
+  position: absolute;
+  inset: -4px;
+  border-radius: 1.6rem;
+  background: conic-gradient(
+    from 140deg,
+    rgba(56, 189, 248, 0.7),
+    rgba(45, 212, 191, 0.5),
+    rgba(129, 140, 248, 0.6),
+    rgba(56, 189, 248, 0.7)
+  );
+  filter: blur(18px);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* Card surface */
+.homeCardInner {
+  position: relative;
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.82));
+  border-radius: 1.6rem;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 20px 45px rgba(15, 23, 42, 0.7),
+    0 0 0 1px rgba(15, 23, 42, 0.9);
+}
+
+/* Badge */
+.homeBadge {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(15, 23, 42, 0.95);
+  color: #e0f2fe;
+}
+
+.homeBadgeDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.9);
+}
+
+/* Title and subtitle */
+.homeTitle {
+  font-size: clamp(1.9rem, 3vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.homeTitleHighlight {
+  background: linear-gradient(120deg, var(--accent-sky), var(--accent-emerald));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.homeSubtitle {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* Actions */
+.homeActions {
+  margin-top: 0.75rem;
+}
+
+/* Primary button (Login) */
+.btnLogin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.85rem;
+  border: none;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #f9fafb;
+  background: linear-gradient(130deg, var(--accent-sky), var(--accent-blue));
+  box-shadow: 0 14px 28px rgba(56, 189, 248, 0.4);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+}
+
+.btnLogin:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 40px rgba(56, 189, 248, 0.55);
+  filter: brightness(1.05);
+}
+
+.btnLogin:active {
+  transform: translateY(1px);
+  box-shadow: 0 8px 16px rgba(56, 189, 248, 0.4);
+}
+
+/* Chip inside Login */
+.btnChip {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(15, 23, 42, 0.45);
+}
+
+/* Secondary button (Register) */
+.btnRegister {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--border-soft);
+  background: radial-gradient(circle at top left, rgba(15, 23, 42, 1), rgba(15, 23, 42, 0.8));
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.btnRegister:hover {
+  border-color: rgba(56, 189, 248, 0.7);
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.85));
+  color: #f9fafb;
+}
+
+.btnRegisterText {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* Footer */
+.homeFooter {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.homeFooterHighlight {
+  color: #7dd3fc;
+  font-weight: 500;
+}
+
+/* Small screens */
+@media (max-width: 480px) {
+  .homeCardInner {
+    padding-inline: 1.5rem;
+  }
+
+  .homeSubtitle {
+    font-size: 0.85rem;
+  }
+}

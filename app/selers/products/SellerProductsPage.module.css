@@ -1,0 +1,238 @@
+:root {
+  --bg: radial-gradient(circle at top left, #1e293b 0, #020617 55%, #000 100%);
+  --card-bg: #020617;
+  --card-soft: #020617;
+  --border-soft: rgba(30, 64, 175, 0.6);
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --accent-blue: #3b82f6;
+  --accent-sky: #38bdf8;
+  --accent-green: #22c55e;
+  --accent-red: #f97373;
+}
+
+/* page */
+.page {
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem;
+  background: var(--bg);
+  color: var(--text-main);
+}
+
+/* header */
+.headerRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+
+.title {
+  font-size: clamp(1.6rem, 2.3vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.15rem;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* add product button */
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.55rem 1.2rem;
+  border-radius: 0.9rem;
+  border: none;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-sky));
+  color: #f9fafb;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.6);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.addButton:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.75);
+}
+
+/* table card */
+.tableCard {
+  border-radius: 1.4rem;
+  padding: 1.4rem 1.3rem 1.1rem;
+  background: linear-gradient(135deg, var(--card-bg), var(--card-soft));
+  border: 1px solid var(--border-soft);
+  box-shadow:
+    0 18px 36px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(15, 23, 42, 0.95);
+}
+
+/* table */
+.table {
+  background: transparent;
+  color: var(--text-main);
+  font-size: 0.85rem;
+}
+
+.table thead tr {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: rgba(30, 41, 59, 0.9);
+}
+
+.table thead th {
+  border-bottom-width: 1px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.tableRow {
+  background: rgba(15, 23, 42, 0.88);
+  border-color: rgba(30, 41, 59, 0.9);
+  transition: background-color 0.15s ease;
+}
+
+.tableRow:nth-child(even) {
+  background: rgba(15, 23, 42, 0.94);
+}
+
+.tableRow:hover {
+  background: rgba(30, 64, 175, 0.4);
+}
+
+/* product cell */
+.productCell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* image */
+.imageWrapper {
+  flex-shrink: 0;
+}
+
+.imageSkeleton {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  background: radial-gradient(circle at top, #1f2937 0, #020617 60%);
+  border: 1px solid rgba(31, 41, 55, 0.95);
+  overflow: hidden;
+}
+
+.productImage {
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  font-size: 0.65rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* product text */
+.productName {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* price */
+.priceCell {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fbbf24;
+}
+
+/* stock badge */
+.stockBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.stockIn {
+  background: rgba(34, 197, 94, 0.16);
+  color: #bbf7d0;
+  border: 1px solid rgba(34, 197, 94, 0.6);
+}
+
+.stockOut {
+  background: rgba(248, 113, 113, 0.16);
+  color: #fecaca;
+  border: 1px solid rgba(248, 113, 113, 0.6);
+}
+
+/* actions */
+.actions {
+  display: inline-flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.editButton,
+.deleteButton {
+  border: none;
+  background: transparent;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.editButton {
+  color: var(--accent-sky);
+}
+
+.editButton:hover {
+  color: #e0f2fe;
+}
+
+.deleteButton {
+  color: var(--accent-red);
+}
+
+.deleteButton:hover {
+  color: #fecaca;
+}
+
+/* empty state */
+.emptyState {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .page {
+    padding: 2rem 1rem;
+  }
+
+  .headerRow {
+    align-items: flex-start;
+  }
+
+  .addButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
