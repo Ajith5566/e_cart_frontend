@@ -1,0 +1,50 @@
+export interface RegisterFormData {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+ 
+export interface FormErrors {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword:string;
+}
+
+export interface LoginFormData{
+  email:string;
+  password:string
+}
+
+export interface LoginFormError{
+  email:string;
+  password:string;
+}
+export interface User {
+  _id: string;
+  username: string;
+  mailId: string;
+}
+export interface LoginResponse {
+  existingUser: User;
+  token: string;
+}
+
+export interface Admin {
+  _id: string;
+  email: string;
+}
+
+export interface AdminResponse {
+  admin: Admin;
+  token: string;
+}
+
+//poduct type
+export type AdminProduct = {
+  name: string;
+  price: number | string;
+  quantity: number | string;
+  image: File | null;
+};

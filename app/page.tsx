@@ -46,15 +46,6 @@ export default function Home() {
               </span>
             </Link>
           </div>
-
-          {/* Footer */}
-          <p className={`${styles.homeFooter} mt-4 mb-0`}>
-            New seller?{" "}
-            <span className={styles.homeFooterHighlight}>
-              Register as a seller
-            </span>{" "}
-            to start earning with E‑Cart.
-          </p>
         </div>
       </div>
     </main>

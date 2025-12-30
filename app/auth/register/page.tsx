@@ -3,25 +3,90 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import styles from "./RegisterPage.module.css";
+import { FormErrors, RegisterFormData } from "@/app/types/types";
+import { registerApi } from "@/app/services/allApi";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+
+const EMPTY_ERRORS: FormErrors = {
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 export default function Page() {
-  const [role, setRole] = useState<"user" | "seller">("user");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userData, setUserData] = useState<RegisterFormData>({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  console.log(userData);
+  
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const [errors, setErrors] = useState<FormErrors>(EMPTY_ERRORS);
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
+  const validate = (): boolean => {
+    const newErrors: FormErrors = { ...EMPTY_ERRORS };
+
+    if (!userData.username.trim()) {
+      newErrors.username = "Name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(userData.username)) {
+      newErrors.username = "Name cannot contain numbers or special characters";
     }
 
-    const data = { name, email, password, role };
-    console.log(data);
+    if (!/^\S+@\S+\.\S+$/.test(userData.email)) {
+      newErrors.email = "Enter a valid email";
+    }
+
+    if (userData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    if (userData.password !== userData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+    return Object.values(newErrors).every((err) => err === "");
   };
+
+ const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!validate()) return;
+
+        try {
+            const result = await registerApi(userData);
+            console.log(result);
+
+
+           toast.success("Registration completed successfully");
+
+            setUserData({
+                username: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+            });
+
+            setErrors({
+                username: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+            });
+
+        } catch (error: unknown) {
+            if (error instanceof AxiosError) {
+                toast.error(error.response?.data?.message || "Something went wrong");
+            } else {
+                alert("Unknown error occurred");
+            }
+        }
+    };
+
 
   return (
     <main className={styles.page}>
@@ -29,65 +94,46 @@ export default function Page() {
         <div className={styles.glow} />
 
         <div className={styles.card}>
-          {/* Heading */}
           <h2 className={styles.title}>Create an Account</h2>
-          <p className={styles.subtitle}>Join E‑Cart today</p>
+          <p className={styles.subtitle}>Join E-Cart today</p>
 
-          {/* Role Selection */}
-          <div className={styles.roleToggle}>
-            <button
-              type="button"
-              onClick={() => setRole("user")}
-              className={`${styles.roleButton} ${
-                role === "user" ? styles.roleButtonActiveUser : ""
-              }`}
-            >
-              <span>User</span>
-              {role === "user" && (
-                <span className={styles.roleBadge}>For shoppers</span>
-              )}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setRole("seller")}
-              className={`${styles.roleButton} ${
-                role === "seller" ? styles.roleButtonActiveSeller : ""
-              }`}
-            >
-              <span>Seller</span>
-              {role === "seller" && (
-                <span className={styles.roleBadge}>For store owners</span>
-              )}
-            </button>
-          </div>
-
-          {/* Form */}
+          {/* Registration form */}
           <form onSubmit={handleSubmit} className={styles.form}>
-            {/* Name */}
+            {/* Full Name */}
             <div className={styles.field}>
               <label className={styles.label}>Full Name</label>
               <input
                 type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
+                value={userData.username}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    username: e.target.value,
+                  })
+                }
                 className={styles.input}
+                placeholder="John Doe"
               />
+              {errors.username && (
+                <p className={styles.errorText}>{errors.username}</p>
+              )}
             </div>
 
             {/* Email */}
             <div className={styles.field}>
               <label className={styles.label}>Email</label>
               <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                type="text"
+                value={userData.email}
+                onChange={(e) =>
+                  setUserData({ ...userData, email: e.target.value })
+                }
                 className={styles.input}
+                placeholder="you@example.com"
               />
+              {errors.email && (
+                <p className={styles.errorText}>{errors.email}</p>
+              )}
             </div>
 
             {/* Password */}
@@ -95,12 +141,18 @@ export default function Page() {
               <label className={styles.label}>Password</label>
               <input
                 type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                value={userData.password}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    password: e.target.value,
+                  })
+                }
                 className={styles.input}
               />
+              {errors.password && (
+                <p className={styles.errorText}>{errors.password}</p>
+              )}
             </div>
 
             {/* Confirm Password */}
@@ -108,34 +160,31 @@ export default function Page() {
               <label className={styles.label}>Confirm Password</label>
               <input
                 type="password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="••••••••"
+                value={userData.confirmPassword}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    confirmPassword: e.target.value,
+                  })
+                }
                 className={styles.input}
               />
+              {errors.confirmPassword && (
+                <p className={styles.errorText}>{errors.confirmPassword}</p>
+              )}
             </div>
 
-            {/* Submit */}
             <button type="submit" className={styles.submitButton}>
-              Register as {role === "user" ? "User" : "Seller"}
+              Register
             </button>
           </form>
 
-          {/* Login Link */}
           <p className={styles.text}>
             Already have an account?{" "}
             <Link href="/auth/login" className={styles.linkPrimary}>
               Login
             </Link>
           </p>
-
-          {/* Seller Note */}
-          {role === "seller" && (
-            <p className={styles.sellerNote}>
-              Seller accounts require admin approval before selling.
-            </p>
-          )}
         </div>
       </div>
     </main>
