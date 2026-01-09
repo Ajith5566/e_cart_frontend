@@ -6,6 +6,7 @@ import styles from "./AdminProducts.module.css";
 import { AdminProduct } from "@/app/types/types";
 import Image from 'next/image'
 import {  AddproductApi } from "@/app/services/allApi";
+import { toast } from "react-toastify";
 
 export default function Page() {
  const [token, setToken] = useState<string>("");
@@ -49,8 +50,17 @@ useEffect(() => {
   }
 
     //api call
+    try{
    const result= await AddproductApi(reqBody,reqHeader);
    console.log(result);
+   if (result.status === 200) {
+    toast.success("Login successful 🎉");
+    setProductData({name:"",price:"",quantity:"",image:null})
+
+   }
+    }catch{
+
+    }
    
   }
 
