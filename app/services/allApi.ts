@@ -1,3 +1,4 @@
+import { fetchedProducts } from "../types/types";
 import { BASE_URL } from "./baseUrl";
 import { commonApi } from "./commonApi";
 
@@ -22,3 +23,28 @@ export const adminloginAPi=async(reqBody:unknown)=>{
 export const AddproductApi = async <T = unknown>(reqBody: unknown,reqHeader?: Record<string, string>) => {
   return await commonApi<T>("POST", `${BASE_URL}/add-product`, reqBody, reqHeader);
 };
+
+//product list admin
+
+export const getAllProductsApi = async () => {
+  return await commonApi<fetchedProducts[]>("GET",`${BASE_URL}/admin/products`);
+};
+
+//product delete
+
+export const deleteProductApi = (id: string, token: string) => {
+  return commonApi("DELETE",`${BASE_URL}/admin/product/${id}`,"",
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
+};
+
+//product update api
+export const updateProductApi=(id: string, data: FormData, token:string)=>{
+  return commonApi("PUT",`${BASE_URL}/admin/productUpdate/${id}`,data,
+    {
+    Authorization: `Bearer ${token}`,
+  }
+  );
+}

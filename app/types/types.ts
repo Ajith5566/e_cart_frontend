@@ -48,3 +48,13 @@ export type AdminProduct = {
   quantity: number | string;
   image: File | null;
 };
+
+//product types
+export type fetchedProducts={
+  _id: string;
+  productName: string;
+  price: number | string;
+  quantity: number | string;
+  image: string; // image URL
+
+}
