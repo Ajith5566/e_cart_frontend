@@ -1,9 +1,11 @@
 .page {
   background: #fafafa;
   min-height: 100vh;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   color: #333;
 }
+
+/* ================= TOP BAR ================= */
 
 .topBar {
   display: flex;
@@ -12,6 +14,8 @@
   padding: 1.5rem 0;
   border-bottom: 1px solid #e0e0e0;
   margin-bottom: 3rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .userInfo {
@@ -34,16 +38,23 @@
   color: #000;
 }
 
+/* ================= ACTIONS ================= */
+
 .topActions {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-end;
 }
 
 .searchWrapper {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+  max-width: 300px;
 }
 
 .searchIcon {
@@ -59,7 +70,7 @@
   background: #fff;
   font-family: inherit;
   font-size: 1rem;
-  width: 300px;
+  width: 100%;
   transition: border-color 0.3s ease;
 }
 
@@ -67,6 +78,8 @@
   outline: none;
   border-color: #999;
 }
+
+/* ================= CART ================= */
 
 .cartButton {
   display: flex;
@@ -106,6 +119,8 @@
   text-align: center;
 }
 
+/* ================= TITLES ================= */
+
 .titleSection {
   margin-bottom: 3rem !important;
 }
@@ -131,9 +146,13 @@
   font-weight: 500;
 }
 
+/* ================= GRID ================= */
+
 .grid {
-  /* Maintains Bootstrap grid */
+  /* Uses Bootstrap grid */
 }
+
+/* ================= CARD ================= */
 
 .card {
   display: flex;
@@ -219,13 +238,54 @@
   color: #fff;
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 768px) {
-  .searchInput {
-    width: 250px;
+  .topBar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
   }
-  
+
+  .userInfo {
+    text-align: center;
+  }
+
+  .topActions {
+    justify-content: space-between;
+  }
+
+  .searchWrapper {
+    max-width: 100%;
+    flex: 1;
+  }
+
+  .cartLabel {
+    display: none;
+  }
+
   .title {
     font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .topActions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .cartButton {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .userName {
+    font-size: 1.125rem;
+  }
+
+  .searchInput {
+    font-size: 0.95rem;
   }
 }
