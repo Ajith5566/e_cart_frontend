@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import styles from "./LoginPage.module.css"; // or "./Header.module.css"
+import styles from "./LoginPage.module.css";
 import { LoginFormData, LoginFormError, LoginResponse } from "@/app/types/types";
 import { loginApi } from "@/app/services/allApi";
 import { AxiosError, AxiosResponse } from "axios";
@@ -15,88 +15,75 @@ const EMPTY_ERRORS: LoginFormError = {
 };
 
 export default function Page() {
-
   const router = useRouter();
-
   const [errors, setErrors] = useState<LoginFormError>(EMPTY_ERRORS);
-
+    // Track whether user is logged in
   const [userdata, setUserData] = useState<LoginFormData>({
     email: "",
     password: "",
   });
-  console.log(userdata);
-  
+
 
   const validate = (): boolean => {
-      const newErrors: LoginFormError = { ...EMPTY_ERRORS };
-  
-      if (!/^\S+@\S+\.\S+$/.test(userdata.email)) {
-        newErrors.email = "Enter a valid email";
-      }
-  
-      if (userdata.password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters long";
-      }
-      setErrors(newErrors);
-      return Object.values(newErrors).every((err) => err === "");
-    };
+    const newErrors: LoginFormError = { ...EMPTY_ERRORS };
+    
+    if (!userdata.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(userdata.email)) {
+      newErrors.email = "Enter a valid email";
+    }
 
+    if (!userdata.password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (userdata.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+    
+    setErrors(newErrors);
+    return Object.values(newErrors).every((err) => err === "");
+  };
 
-
-
-
-  const handleSubmit =async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!validate()) return;
+
     try {
       const result = await loginApi(userdata) as AxiosResponse<LoginResponse>;
 
       if (result.status === 200) {
-        // Store user data & token
-        sessionStorage.setItem(
-          "existingUser",
-          JSON.stringify(result.data.existingUser)
-        );
+        sessionStorage.setItem("existingUser", JSON.stringify(result.data.existingUser));
         sessionStorage.setItem("token", result.data.token);
-
-        toast.success("Login successful 🎉");
-
-        // Reset form
+        toast.success("Login successful");
         setUserData({ email: "", password: "" });
         setErrors({ email: "", password: "" });
-
-        // Navigate to dashboard
         router.push("/products");
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        toast.error(
-          error.response?.data?.message || "Invalid email or password"
-        );
+        toast.error(error.response?.data?.message || "Invalid email or password");
       } else {
         toast.error("Something went wrong");
       }
     }
   };
 
+
   return (
     <main className={styles.page}>
       <div className={styles.cardWrapper}>
-        <div className={styles.glow} />
-
         <div className={styles.card}>
           {/* Heading */}
-          <h2 className={styles.title}>Login to E‑Cart</h2>
+          <h2 className={styles.title}>Login to E-Cart</h2>
           <p className={styles.subtitle}>Access your account</p>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className={styles.form}>
             {/* Email */}
             <div className={styles.field}>
-              <label className={styles.label}>Email</label>
+              <label className={styles.label}>Email Address</label>
               <input
                 type="email"
-                required
                 value={userdata.email}
                 onChange={(e) =>
                   setUserData({
@@ -107,6 +94,9 @@ export default function Page() {
                 placeholder="you@example.com"
                 className={styles.input}
               />
+              {errors.email && (
+                <p className={styles.errorText}>{errors.email}</p>
+              )}
             </div>
 
             {/* Password */}
@@ -114,7 +104,6 @@ export default function Page() {
               <label className={styles.label}>Password</label>
               <input
                 type="password"
-                required
                 value={userdata.password}
                 onChange={(e) =>
                   setUserData({
@@ -125,19 +114,22 @@ export default function Page() {
                 placeholder="••••••••"
                 className={styles.input}
               />
+              {errors.password && (
+                <p className={styles.errorText}>{errors.password}</p>
+              )}
             </div>
 
             {/* Login Button */}
             <button type="submit" className={styles.loginButton}>
-              Login
+              Sign In
             </button>
           </form>
 
           {/* Register Link */}
           <p className={styles.text}>
-            Don’t have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/auth/register" className={styles.linkPrimary}>
-              Register
+              Create one
             </Link>
           </p>
 
@@ -153,4 +145,3 @@ export default function Page() {
     </main>
   );
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            

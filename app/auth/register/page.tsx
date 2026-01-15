@@ -22,8 +22,6 @@ export default function Page() {
     password: "",
     confirmPassword: "",
   });
-  console.log(userData);
-  
 
   const [errors, setErrors] = useState<FormErrors>(EMPTY_ERRORS);
 
@@ -36,15 +34,19 @@ export default function Page() {
       newErrors.username = "Name cannot contain numbers or special characters";
     }
 
-    if (!/^\S+@\S+\.\S+$/.test(userData.email)) {
+    if (!userData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(userData.email)) {
       newErrors.email = "Enter a valid email";
     }
 
-    if (userData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters long";
+    if (!userData.password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (userData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     }
 
-    if (userData.password !== userData.confirmPassword) {
+    if (userData.confirmPassword !== userData.password) {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
@@ -52,49 +54,35 @@ export default function Page() {
     return Object.values(newErrors).every((err) => err === "");
   };
 
- const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
 
-        if (!validate()) return;
-
-        try {
-            const result = await registerApi(userData);
-            console.log(result);
-
-
-           toast.success("Registration completed successfully");
-
-            setUserData({
-                username: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-            });
-
-            setErrors({
-                username: "",
-                email: "",
-                password: "",
-                confirmPassword: "",
-            });
-
-        } catch (error: unknown) {
-            if (error instanceof AxiosError) {
-                toast.error(error.response?.data?.message || "Something went wrong");
-            } else {
-                alert("Unknown error occurred");
-            }
-        }
-    };
-
+    try {
+      await registerApi(userData);
+      toast.success("Registration completed successfully");
+      setUserData({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      setErrors(EMPTY_ERRORS);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || "Something went wrong");
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
+  };
 
   return (
     <main className={styles.page}>
       <div className={styles.cardWrapper}>
-        <div className={styles.glow} />
-
         <div className={styles.card}>
-          <h2 className={styles.title}>Create an Account</h2>
+          {/* Heading */}
+          <h2 className={styles.title}>Create Account</h2>
           <p className={styles.subtitle}>Join E-Cart today</p>
 
           {/* Registration form */}
@@ -121,9 +109,9 @@ export default function Page() {
 
             {/* Email */}
             <div className={styles.field}>
-              <label className={styles.label}>Email</label>
+              <label className={styles.label}>Email Address</label>
               <input
-                type="text"
+                type="email"
                 value={userData.email}
                 onChange={(e) =>
                   setUserData({ ...userData, email: e.target.value })
@@ -149,6 +137,7 @@ export default function Page() {
                   })
                 }
                 className={styles.input}
+                placeholder="••••••••"
               />
               {errors.password && (
                 <p className={styles.errorText}>{errors.password}</p>
@@ -168,6 +157,7 @@ export default function Page() {
                   })
                 }
                 className={styles.input}
+                placeholder="••••••••"
               />
               {errors.confirmPassword && (
                 <p className={styles.errorText}>{errors.confirmPassword}</p>
@@ -175,14 +165,14 @@ export default function Page() {
             </div>
 
             <button type="submit" className={styles.submitButton}>
-              Register
+              Create Account
             </button>
           </form>
 
           <p className={styles.text}>
             Already have an account?{" "}
             <Link href="/auth/login" className={styles.linkPrimary}>
-              Login
+              Sign in
             </Link>
           </p>
         </div>

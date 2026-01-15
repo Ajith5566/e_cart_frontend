@@ -1,53 +1,34 @@
 import Link from "next/link";
 import styles from "./home_page.module.css";
 
-
 export default function Home() {
   return (
-    <main className={`${styles.homePage} d-flex align-items-center justify-content-center`}>
-      <div className={`${styles.homeCard} position-relative w-100`}>
-        {/* Glow background */}
-        <div className={styles.homeGlow} />
+    <main className={styles.homePage}>
+      <section className={styles.container}>
+        <div className={styles.homeCard}>
+          <span className={styles.homeBadge}>
+            Multi-seller marketplace
+          </span>
 
-        {/* Card */}
-        <div
-          className={`${styles.homeCardInner} shadow-lg rounded-4 px-4 px-md-5 py-5 text-center`}
-        >
-          {/* Badge */}
-          <div
-            className={`${styles.homeBadge} d-inline-flex align-items-center gap-2 mb-4`}
-          >
-            <span className={styles.homeBadgeDot} />
-            <span className="text-uppercase fw-semibold small">
-              Multi-seller marketplace
-            </span>
-          </div>
-
-          {/* Title */}
-          <h1 className={`${styles.homeTitle} mb-2`}>
-            Welcome to <span className={styles.homeTitleHighlight}>E‑Cart</span>
+          <h1 className={styles.homeTitle}>
+            Welcome to <span>E-Cart</span>
           </h1>
 
-          <p className={`${styles.homeSubtitle} mb-4`}>
-            Discover thousands of products from trusted sellers, compare prices
-            in one place, and get the best deals every day.
+          <p className={styles.homeSubtitle}>
+            A curated marketplace where trusted sellers meet smart buyers.
+            Compare prices, discover quality products, and shop with confidence.
           </p>
 
-          {/* Buttons */}
-          <div className={`${styles.homeActions} d-flex flex-column gap-2`}>
-            <Link href="/auth/login" className={`${styles.btnLogin} w-100`}>
-              <span>Login</span>
+          <div className={styles.homeActions}>
+            <Link href="/auth/login" className={styles.btnPrimary}>
+              Sign In
             </Link>
-
-            <Link href="/auth/register" className={`${styles.btnRegister} w-100`}>
-              <span>Register</span>
-              <span className={styles.btnRegisterText}>
-                Create your free account
-              </span>
+            <Link href="/auth/register" className={styles.btnSecondary}>
+              Create Account
             </Link>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   );
 }

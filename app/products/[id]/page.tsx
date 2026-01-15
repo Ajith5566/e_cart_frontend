@@ -1,61 +1,103 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import styles from "./ProductDetailPage.module.css";
+import { fetchedProducts } from "@/app/types/types";
+import { useEffect, useState } from "react";
+import { getProductByIdApi } from "@/app/services/allApi";
+import { BASE_URL } from "@/app/services/baseUrl";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
+  const router = useRouter();
+  const [product, setProduct] = useState<fetchedProducts>();
 
-  // later → fetch product by id
-  const product = {
-    name: "iPhone 15",
-    price: 79999,
-    description:
-      "Latest iPhone with powerful performance and premium design.",
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await getProductByIdApi(id as string);
+        setProduct(res.data);
+      } catch (error) {
+        console.error("Failed to fetch product", error);
+      }
+    };
+
+    if (id) fetchProduct();
+  }, [id]);
+
+  const handleClose = () => {
+    router.back();
   };
 
   return (
     <main className={styles.page}>
-      <div className={styles.card}>
-        {/* Image */}
-        <div className={styles.imageSection}>
-          <div className={styles.imageFrame}>
-            <span className={styles.imageText}>Product Image</span>
-          </div>
+      <div className="container">
+        <div className={styles.card}>
+          {/* Close button */}
+          <button
+            className={styles.closeButton}
+            onClick={handleClose}
+            aria-label="Close product details"
+          >
+            ×
+          </button>
 
-          <div className={styles.thumbnailRow}>
-            <div className={styles.thumbnail} />
-            <div className={styles.thumbnail} />
-            <div className={styles.thumbnail} />
-          </div>
-        </div>
+          <div className={styles.contentWrapper}>
+            {/* Image Section */}
+            <div className={styles.imageSection}>
+              <div className={styles.imageFrame}>
+                <img
+                  src={`${BASE_URL}/uploads/${product?.image}`}
+                  alt={product?.productName || "Product"}
+                  className={styles.mainImage}
+                />
+              </div>
+              
+              <div className={styles.thumbnailRow}>
+                <div className={styles.thumbnailActive} />
+                <div className={styles.thumbnail} />
+                <div className={styles.thumbnail} />
+              </div>
+            </div>
 
-        {/* Details */}
-        <div className={styles.detailsSection}>
-          <p className={styles.productId}>Product ID: {String(id)}</p>
+            {/* Details Section */}
+            <div className={styles.detailsSection}>
+              <p className={styles.productId}>Product ID: {String(id)}</p>
+              
+              <h1 className={styles.title}>{product?.productName}</h1>
+              
+              <div className={styles.priceSection}>
+                <span className={styles.price}>₹{product?.price}</span>
+              </div>
 
-          <h1 className={styles.title}>{product.name}</h1>
+              <div className={styles.metaSection}>
+                <div className={styles.metaRow}>
+                  <span className={styles.metaBadge}>In Stock</span>
+                  <span className={styles.metaText}>Free delivery in 2–5 days</span>
+                </div>
+              </div>
 
-          <p className={styles.price}>₹{product.price}</p>
+              <div className={styles.actions}>
+                <button className={`${styles.actionButton} ${styles.addToCart}`} type="button">
+                  Add to Cart
+                </button>
+                <button className={`${styles.actionButton} ${styles.buyNow}`} type="button">
+                  Buy Now
+                </button>
+              </div>
 
-          <p className={styles.description}>{product.description}</p>
-
-          {/* Meta info */}
-          <div className={styles.metaRow}>
-            <span className={styles.metaBadge}>In stock</span>
-            <span className={styles.metaText}>Free delivery in 2–5 days</span>
-          </div>
-
-          {/* Actions */}
-          <div className={styles.actions}>
-            <button className={styles.addToCartButton}>Add to Cart</button>
-            <button className={styles.buyNowButton}>Buy Now</button>
-          </div>
-
-          {/* Guarantee row */}
-          <div className={styles.guaranteeRow}>
-            <span>✓ Secure payment</span>
-            <span>✓ 7‑day replacement</span>
+              <div className={styles.guaranteeRow}>
+                <div className={styles.guaranteeItem}>
+                  <span className={styles.guaranteeIcon}>✓</span>
+                  Secure payment
+                </div>
+                <div className={styles.guaranteeItem}>
+                  <span className={styles.guaranteeIcon}>✓</span>
+                  7-day replacement
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

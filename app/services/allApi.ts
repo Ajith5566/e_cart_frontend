@@ -1,4 +1,4 @@
-import { fetchedProducts } from "../types/types";
+import { fetchedProducts, User } from "../types/types";
 import { BASE_URL } from "./baseUrl";
 import { commonApi } from "./commonApi";
 
@@ -48,3 +48,25 @@ export const updateProductApi=(id: string, data: FormData, token:string)=>{
   }
   );
 }
+
+//get user list for admin dashboard
+
+export const getAllusersApi = async () => {
+  return await commonApi<User[]>("GET",`${BASE_URL}/admin/dash/users`);
+
+};
+
+//block user
+export const blockUserApi=(id:string,token:string)=>{
+  return commonApi("PUT",`${BASE_URL}/admin/dash/blockUser/${id}`,{},
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  )
+}
+
+
+//get product by id
+export const getProductByIdApi = (id: string) => {
+  return commonApi<fetchedProducts>("GET", `${BASE_URL}/productsByid/${id}`);
+};

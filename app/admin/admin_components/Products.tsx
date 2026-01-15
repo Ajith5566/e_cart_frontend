@@ -10,9 +10,9 @@ import {  AddproductApi, deleteProductApi, getAllProductsApi } from "@/app/servi
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { BASE_URL } from "@/app/services/baseUrl";
-import EditProductModal from "../admin_components/editProduct_modal";
+import EditProductModal from "./editProduct_modal";
 
-export default function Page() {
+export default function Products() {
  const [token, setToken] = useState<string>("");
  //product list
 const [products, setProducts] = useState<fetchedProducts[]>([]);
@@ -142,16 +142,7 @@ const handleDelete = async (id: string) => {
   />
 )}
     <div className="container py-4">
-      {/* Header */}
-      <div className={`d-flex justify-content-between align-items-center mb-4 ${styles.header}`}>
-        <h1 className={styles.title}>Admin – Products</h1>
-        <Link
-          href="/admin/dashboard"
-          className={`btn btn-primary btn-sm ${styles.backBtn}`}
-        >
-          ← Back to Dashboard
-        </Link>
-      </div>
+
 
       <div className="row g-4">
         {/* Add Product */}

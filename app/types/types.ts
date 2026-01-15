@@ -25,6 +25,7 @@ export interface User {
   _id: string;
   username: string;
   mailId: string;
+  isBlocked:boolean
 }
 export interface LoginResponse {
   existingUser: User;
