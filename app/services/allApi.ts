@@ -3,6 +3,12 @@ import { BASE_URL } from "./baseUrl";
 import { commonApi } from "./commonApi";
 
 
+export type PagePayload = {
+  title: string;
+  shortDescription: string;
+  description: string;
+};
+
 //register a user
 export const registerApi =async (reqBody:unknown)=>{
     return await commonApi('POST',`${BASE_URL}/user/register`,reqBody)
@@ -69,4 +75,79 @@ export const blockUserApi=(id:string,token:string)=>{
 //get product by id
 export const getProductByIdApi = (id: string) => {
   return commonApi<fetchedProducts>("GET", `${BASE_URL}/productsByid/${id}`);
+};
+
+
+
+// ➕ Add new page
+export const addPageApi = (
+  data: PagePayload,
+  token: string
+) => {
+  return commonApi(
+    "POST",
+    `${BASE_URL}/admin/pages`,
+    data,
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
+};
+
+// 📄 Get all pages (admin list)
+export const getAllPagesApi = (token: string) => {
+  return commonApi(
+    "GET",
+    `${BASE_URL}/admin/pages`,
+    "",
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
+};
+
+// ✏️ Update page
+export const updatePageApi = (
+  id: string,
+  data: PagePayload,
+  token: string
+) => {
+  return commonApi(
+    "PUT",
+    `${BASE_URL}/admin/pages/${id}`,
+    data,
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
+};
+
+// 🗑️ Delete page
+export const deletePageApi = (
+  id: string,
+  token: string
+) => {
+  return commonApi(
+    "DELETE",
+    `${BASE_URL}/admin/pages/${id}`,
+    "",
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
+};
+
+// 🔄 Toggle publish / unpublish
+export const togglePageApi = (
+  id: string,
+  token: string
+) => {
+  return commonApi(
+    "PUT",
+    `${BASE_URL}/admin/pages/${id}/toggle`,
+    "",
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
 };

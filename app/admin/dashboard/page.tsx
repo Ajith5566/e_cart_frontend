@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { AxiosResponse } from "axios";
 import Products from "../admin_components/Products";
 import { useRouter } from "next/navigation";
+import PageEditor from "../admin_components/pageEditor";
 
 type BlockUserResponse = {
   message: string;
@@ -24,7 +25,7 @@ export default function Page() {
   const [products, setProducts] = useState<fetchedProducts[]>([]);
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<
-    "dashboard" | "products" | "orders"
+    "dashboard" | "products" | "pages"
   >("dashboard");
 
   const user_count = users.length;
@@ -176,14 +177,14 @@ useEffect(() => {
                   <button
                     type="button"
                     className={`nav-link text-start border-0 w-100 px-3 py-2 rounded-3 ${
-                      activeTab === "orders"
+                      activeTab === "pages"
                         ? "bg-primary text-white shadow-sm"
                         : "text-muted hover-bg-light"
                     }`}
-                    onClick={() => setActiveTab("orders")}
+                    onClick={() => setActiveTab("pages")}
                   >
                     <i className="bi bi-cart-check me-2"></i>
-                    Orders
+                    Pages
                   </button>
                 </li>
               </ul>
@@ -365,19 +366,13 @@ useEffect(() => {
             )}
 
             {/* ===== ORDERS ===== */}
-            {activeTab === "orders" && (
+            {activeTab === "pages" && (
               <div className="card shadow-sm border-0">
                 <div className="card-header bg-white border-0 pb-0">
                   <h1 className="h2 mb-3 fw-bold text-dark">Orders Management</h1>
                 </div>
                 <div className="card-body">
-                  <div className="text-center py-5 text-muted">
-                    <i className="bi bi-cart-check display-1 opacity-50 mb-4 d-block"></i>
-                    <h4 className="mb-3">Orders section coming soon</h4>
-                    <p className="lead">
-                      Order management interface will be available in the next update.
-                    </p>
-                  </div>
+                  <PageEditor/>
                 </div>
               </div>
             )}
